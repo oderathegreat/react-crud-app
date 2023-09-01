@@ -4,35 +4,43 @@ import React, {useState, useEffect} from 'react';
 import Header from './components/Header';
 import AddContact from './components/AddContact';
 import ContactList from './components/ContactList';
+import { v4 as uuid } from "uuid";
 
 
 function App() {
 
  
   
-const LOCAL_STORAGE_KEY = "contacts";
+  const LOCAL_STORAGE_KEY = "contacts";
+  const [contacts, setContacts] = useState(
+    JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY)) ?? []
+  );
 
-const [contacts, setContacts] = useState([]);
+  const addContactHandler = (contact) => {
+    console.log(contact);
+    setContacts([...contacts, { id: uuid(), ...contact }]);
+  };
 
-const addContactHandler = (contact) => {
-  console.log(contact);
-  setContacts([...contacts, contact]);
-};
+  const removeContactHandler = (id) => {
+    const newContactList = contacts.filter((contact) => {
+      return contact.id !== id;
+    });
 
-//useEffect hook for local Storage
-useEffect( ()=>{
+    setContacts(newContactList);
+  };
 
-  //storing our user data in local storage
-  localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(contacts))
+  // useEffect(() => {
+  //   const retriveContacts = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY));
+  //   if (retriveContacts) setContacts(retriveContacts);
+  // }, []);
 
-},[contacts])
-
+  useEffect(() => {
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(contacts));
+  }, [contacts]);
 
 
   return (
     <div className="ui container">
-
-  <h1>Hello World</h1>
   <Header/>
   <AddContact addContactHandler={addContactHandler} />
   <ContactList  contacts={contacts}/>
