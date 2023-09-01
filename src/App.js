@@ -1,6 +1,6 @@
 
 import './App.css';
-import React from 'react';
+import React, {useState} from 'react';
 import Header from './components/Header';
 import AddContact from './components/AddContact';
 import ContactList from './components/ContactList';
@@ -8,31 +8,13 @@ import ContactList from './components/ContactList';
 
 function App() {
 
-const contacts =  [
-{
-    id: 1,
-    "name" :"Karl Peters",
-    "age": 21,
-    "city" : "Kakamega"
-},
+const [contacts, setContacts] = useState([]);
 
-{
-  id: 2,
-  "name" :"Fordo Mondeo",
-  "age": 25,
-  "city" : "Nairobi"
-},
+const addContactHandler = (contact) => {
+  console.log(contact);
+  setContacts([...contacts, contact]);
+};
 
-{
-  id: 3,
-  "name" :"Mona Lisa",
-  "age": 24,
-  "city" : "Mombasa"
-}
-
-
-
-];
 
 
   return (
@@ -40,7 +22,7 @@ const contacts =  [
 
   <h1>Hello World</h1>
   <Header/>
-  <AddContact/>
+  <AddContact addContactHandler={addContactHandler} />
   <ContactList  contacts={contacts}/>
     </div>
   );
